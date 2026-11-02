@@ -3,7 +3,7 @@ Site récup api & scrapping pour affichage sur le site.
 
 
 **Connecteurs interrogés à chaque recherche :** catalogue CROUS, pages publiques de ville/résidence ImmoJeune, et pages publiques d'agglomération/résidence Adele.
-- Les cartes ne sont dessinées que lorsqu'une source renvoie une donnée exploitable avec un loyer et une URL d'origine. Aucune annonce de démonstration, photo copiée ou prix inventé n'est ajouté.
+- Les cartes ne sont dessinées que lorsqu'une source renvoie une donnée exploitable avec un loyer et une URL d'origine. Aucune annonce de démonstration ni prix inventé n'est ajouté.
 - Les résultats portent le nom de leur source et ouvrent la fiche d'origine. La disponibilité, les charges, le dépôt de garantie et l'éligibilité doivent être confirmés chez le fournisseur.
 - Suggestions de communes via `geo.api.gouv.fr` et d'établissements via le jeu de données ouvert du Ministère de l'Enseignement supérieur.
 - Filtres par budget et type, tri, favoris, notes privées enregistrées dans le navigateur, et itinéraire externe vers l'établissement.
@@ -32,6 +32,7 @@ Aucun token, clé API payante, Node.js ou serveur à gérer n'est nécessaire. L
 
 ### CROUS
 
+- Les cartes affichent la première photo de résidence fournie par le CROUS, ou une photo du logement si nécessaire. Les images restent hébergées sur le portail officiel ; en cas d’absence ou d’échec de chargement, l’illustration est conservée.
 - Portail : https://trouverunlogement.lescrous.fr/tools/47/search
 - L'interface officielle utilise un endpoint JSON côté serveur : `POST https://trouverunlogement.lescrous.fr/api/fr/search/47`.
 - L'identifiant `47` est une campagne configurée à la date de développement et peut changer d'une année universitaire à l'autre. Il est centralisé dans `app.js` et `functions/api/logements.js`.

@@ -184,6 +184,19 @@ function inferHousingType(item, modes, area) {
   return 'Résidence étudiante';
 }
 
+function crousPhotoUrl(item) {
+  // The official detail page uses the first residence photo as its banner.
+  const medias = [...(item?.residence?.medias || []), ...(item?.medias || [])];
+  for (const media of medias) {
+    const src = media?.src;
+    if (typeof src !== 'string' || !src.trim()) continue;
+    const parts = src.split('/');
+    if (parts.some((part) => !part || part === '.' || part === '..')) continue;
+    return `${CONFIG.crousBase}/media/cache/resolve/wide/${parts.map(encodeURIComponent).join('/')}`;
+  }
+  return '';
+}
+
 function parseCrousItem(item) {
   const address = item?.residence?.address || item?.address || '';
   const city = extractCity(address);
@@ -205,6 +218,7 @@ function parseCrousItem(item) {
     id: `crous-${id ?? normalize(`${address}-${item?.label || ''}`)}`,
     sourceId: id,
     source: 'CROUS',
+    photo: crousPhotoUrl(item),
     title: item?.label || item?.title || 'Logement étudiant CROUS',
     residence: item?.residence?.label || item?.residenceLabel || '',
     city,
@@ -383,6 +397,7 @@ function renderCard(listing, filters) {
   const note = savedNotes[listing.id] || '';
   const officialUrl = safeExternalUrl(listing.link);
   const directionsUrl = buildDirectionsUrl(listing, filters);
+  const photoUrl = listing.photo ? safeExternalUrl(listing.photo) : '';
   const area = surfaceLabel(listing.area);
   const sourceLabel = listing.source || 'Source externe';
   const occupancy = listing.displayMode?.type === 'house_sharing' ? 'Tarif colocation' : 'Tarif individuel';
@@ -395,6 +410,7 @@ function renderCard(listing, filters) {
   return `
     <article class="listing-card real-listing" data-listing-id="${escapeHtml(listing.id)}">
       <div class="listing-visual real-listing-visual">
+        ${photoUrl && photoUrl !== '#' ? `<img class="listing-photo" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(listing.residence || listing.title)}" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}
         <span class="visual-label live-label"><span class="available-dot"></span> ${escapeHtml(sourceLabel)}</span>
         <span class="real-visual-house" aria-hidden="true">⌂</span>
         <button class="favorite-button ${isFavorite ? 'is-favorite' : ''}" type="button" data-action="favorite" data-id="${escapeHtml(listing.id)}" aria-label="${isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button>
@@ -659,6 +675,10 @@ elements.sort.addEventListener('change', renderListings);
 elements.transport.addEventListener('change', renderListings);
 document.querySelectorAll('input[name="housing"]').forEach((input) => input.addEventListener('change', renderListings));
 elements.resetButton.addEventListener('click', resetFilters);
+
+elements.listingGrid.addEventListener('error', (event) => {
+  if (event.target.matches('.listing-photo')) event.target.remove();
+}, true);
 
 elements.listingGrid.addEventListener('click', (event) => {
   const button = event.target.closest('button[data-action]');
