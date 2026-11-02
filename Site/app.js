@@ -17,14 +17,14 @@ const STORAGE_KEYS = {
 };
 
 const SOURCE_CONFIG = {
-  leboncoin: { domain: 'leboncoin.fr', title: 'Leboncoin' },
-  seloger: { domain: 'seloger.com', title: 'SeLoger' },
-  crous: { domain: 'trouverunlogement.lescrous.fr', title: 'Logement CROUS' },
-  pap: { domain: 'pap.fr', title: 'PAP' },
-  lokaviz: { domain: 'lokaviz.fr', title: 'Lokaviz' },
-  studapart: { domain: 'studapart.com', title: 'Studapart' },
-  immojeune: { domain: 'immojeune.com', title: 'ImmoJeune' },
-  adele: { domain: 'adele.org', title: 'Adele' }
+  leboncoin: { url: 'https://www.leboncoin.fr/', domain: 'leboncoin.fr', title: 'Leboncoin' },
+  seloger: { url: 'https://www.seloger.com/', domain: 'seloger.com', title: 'SeLoger' },
+  crous: { url: 'https://trouverunlogement.lescrous.fr/tools/47/search', domain: 'trouverunlogement.lescrous.fr', title: 'Logement CROUS' },
+  pap: { url: 'https://www.pap.fr/annonce/locations-immobilieres', domain: 'pap.fr', title: 'PAP' },
+  lokaviz: { url: 'https://www.lokaviz.fr/', domain: 'lokaviz.fr', title: 'Lokaviz' },
+  studapart: { url: 'https://www.studapart.com/', domain: 'studapart.com', title: 'Studapart' },
+  immojeune: { url: 'https://www.immojeune.com/', domain: 'immojeune.com', title: 'ImmoJeune' },
+  adele: { url: 'https://www.adele.org/', domain: 'adele.org', title: 'Adele' }
 };
 
 const elements = {
@@ -334,27 +334,9 @@ function getVisibleListings() {
   });
 }
 
-function buildSearchUrl(sourceKey, filters, listing = null) {
-  if (sourceKey === 'crous') {
-    return listing ? safeExternalUrl(listing.link) : buildCrousSearchUrl(filters.city);
-  }
-  if (sourceKey === 'immojeune' && !listing && filters.city) {
-    const url = new URL('https://www.google.com/search');
-    url.searchParams.set('q', `site:immojeune.com/logement-etudiant ${filters.city} logement étudiant`);
-    return url.toString();
-  }
-  if (sourceKey === 'adele' && !listing && filters.city) {
-    const url = new URL('https://www.google.com/search');
-    url.searchParams.set('q', `site:adele.org/residence/agglomeration ${filters.city} logement étudiant`);
-    return url.toString();
-  }
-  const source = SOURCE_CONFIG[sourceKey];
-  if (!source) return '#';
-  const type = listing?.type || (filters.types.length === 1 ? filters.types[0] : 'logement étudiant');
-  const query = `site:${source.domain} ${filters.city || ''} ${type} location étudiant`.trim();
-  const url = new URL('https://www.google.com/search');
-  url.searchParams.set('q', query);
-  return url.toString();
+function buildSearchUrl(sourceKey) {
+  // Source cards open the provider directly, without a search-engine redirect.
+  return SOURCE_CONFIG[sourceKey]?.url || '#';
 }
 
 function buildCrousSearchUrl(city) {
@@ -479,9 +461,8 @@ function updateRangeFill() {
 }
 
 function updateSourceLinks() {
-  const filters = getFilters();
   document.querySelectorAll('[data-source]').forEach((link) => {
-    link.href = buildSearchUrl(link.dataset.source, filters);
+    link.href = buildSearchUrl(link.dataset.source);
   });
 }
 
