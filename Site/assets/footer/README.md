@@ -19,3 +19,11 @@ Local optimized copy: imageory-coastal.webp. Original proportions retained; sour
 User-selected replacement: https://imageory.in/image/a-poetic-flat-editorial-illustration-655240
 Original: https://pub-4d1656c9a8f7435f9c38544499f72988.r2.dev/Abstract-landscape/8.png
 Optimized copy: imageory-rooftop.webp. CSS frames the bottom of the illustration to retain the person, cat and houses while trimming excess sky. Earlier alternatives preserved.
+
+## University campus (active)
+
+university-campus.webp: built-in image generation edit of the original campus-town illustration. Prompt: retain the panoramic composition, navy evening sky, trees, river, bridge, path and two students; replace cathedral, castle and religious architecture with secular university faculty buildings, a library with visible bookshelves and student residences. Preserve the warm windows and painted style. No text or logos.
+
+## Everyday public campus (active)
+
+student-campus.webp: built-in image generation edit of the university landscape. Prompt: modest French public university and CROUS-style housing, functional concrete and brick blocks, small repeated windows, bicycle racks, bus shelter, simple paths and lawns, students with backpacks. Retain navy evening illustration and panoramic format. Remove palatial architecture, monumental stairs, ornate bridge and river; use restrained everyday lighting, no text or logos.
