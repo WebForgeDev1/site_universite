@@ -8,7 +8,7 @@ export default {
       if (request.method === "GET") {
         return new Response(JSON.stringify({
           ok: true,
-          service: "CampusLogis API",
+          service: "Studom API",
           route: "/api/logements",
           usage: "Envoyer une requête POST avec un JSON contenant city, par exemple {\"city\":\"Lyon\"}."
         }), {
