@@ -199,3 +199,117 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* Custom illustrated steps, consistent with the saved sticker bundle. */
 .how-sticker { display:block; width:60px; height:60px; object-fit:contain; }
 @media (max-width:720px) { .how-card { grid-template-columns:56px 1fr; } .how-sticker { width:52px; height:52px; grid-row:1 / span 2; } }
+
+/* Search form: clear fields, consistent icons and comfortable controls. */
+.search-section .section-heading { align-items:center; }
+.search-section .section-heading h2 { margin:0; }
+.search-section .heading-aside { color:#53675c; font-size:13px; }
+.search-panel { padding:24px 24px 0; border-color:#d4dfd6; box-shadow:none; border-radius:16px; }
+.primary-fields { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto; gap:16px; }
+.field-divider { display:none; }
+.primary-fields .field { padding:14px; border:1px solid #d4dfd6; border-radius:10px; background:#fffefa; gap:12px; transition:border-color .18s,background .18s; }
+.primary-fields .field:focus-within { border-color:#2b6656; outline:2px solid #2b6656; outline-offset:2px; background:#fff; }
+.field-icon { flex-basis:36px; height:40px; background:transparent; }
+.field-icon svg { width:25px; height:25px; }
+.field-label { font-size:12px; color:#254a3d; gap:7px; flex-wrap:wrap; }
+.field-label small { color:#596c60; font-size:11px; }
+.field input { font-size:15px; padding-top:8px; line-height:1.5; }
+.field input::placeholder { color:#64766a; }
+.required-dot { color:#a34c23; }
+.search-button { align-self:stretch; min-height:52px; padding:16px 23px; font-size:14px; border-radius:10px; }
+.search-button span { display:flex; align-items:center; }
+.search-button svg { width:20px; height:20px; }
+.search-button:focus-visible,.transport-filter select:focus-visible,.budget-control input:focus-visible { outline:3px solid #2b6656; outline-offset:4px; }
+.filter-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.7fr) minmax(0,1fr); gap:26px; margin:24px -24px 0; padding:24px; background:#f4f7f1; border-top-color:#dce5da; }
+.filter-separator { display:none; }
+.filter-title { font-size:12px; line-height:1.5; color:#254a3d; gap:8px; margin-bottom:14px; }
+.filter-icon { width:28px; height:28px; background:transparent; }
+.filter-icon svg { width:20px; height:20px; }
+.budget-control { flex-wrap:wrap; gap:12px; }
+.budget-control input[type=range] { flex:1; height:6px; margin:12px 0; }
+.budget-control input[type=range]::-webkit-slider-thumb { width:20px; height:20px; }
+.budget-control input[type=range]::-moz-range-thumb { width:14px; height:14px; }
+.budget-control output { font-size:21px; }
+.budget-control output small { font-size:12px; color:#53675c; }
+.type-options { gap:8px; }
+.check-chip span { padding:10px 12px; min-height:42px; font-size:12px; border-radius:8px; color:#485d50; border-color:#aebfb2; }
+.check-chip input:checked + span { color:#173b35; border-color:#557e64; background:#e0eddf; }
+.check-chip input:checked + span::before { content:'✓'; margin-right:6px; font-size:12px; }
+.transport-filter select { min-height:44px; padding:10px 12px; font-size:12px; border-color:#aebfb2; }
+.filter-help { color:#53675c; font-size:11px; line-height:1.65; margin-top:10px; }
+.search-section .live-status { padding:16px 18px; margin-top:16px; }
+.search-section .live-status p { font-size:12px; line-height:1.75; color:#435f50; }
+@media (max-width:1000px) {
+  .primary-fields { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+  .search-button { grid-column:1 / -1; }
+  .filter-row { grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
+  .budget-filter { order:1; } .transport-filter { order:2; }
+  .housing-filter { order:3; grid-column:1 / -1; }
+}
+@media (max-width:600px) {
+  .search-section .section-heading { align-items:flex-start; flex-direction:column; gap:12px; }
+  .search-section .heading-aside { margin:0; max-width:none; }
+  .search-panel { padding:16px 16px 0; }
+  .primary-fields { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .primary-fields .field { padding:12px; }
+  .field input { font-size:16px; }
+  .field-label { font-size:13px; }
+  .filter-row { grid-template-columns:minmax(0,1fr); margin:18px -16px 0; padding:20px 16px; gap:24px; }
+  .housing-filter { order:2; } .transport-filter { order:3; }
+  .filter-title { font-size:13px; }
+  .check-chip span { font-size:13px; min-height:44px; }
+  .transport-filter select { font-size:16px; }
+  .filter-help { font-size:12px; }
+}
+
+/* Segmented search bar inspired by the selected Dribbble reference. */
+.booking-search { padding:0; border:0; overflow:visible; background:transparent; border-radius:0; }
+.booking-type-bar { display:flex; justify-content:center; padding:0 24px; }
+.booking-type-bar .housing-filter { flex:0 1 auto; padding:16px 24px 18px; background:#fff; border:1px solid #dce5db; border-bottom:0; border-radius:24px 24px 0 0; }
+.booking-type-bar .filter-title { display:block; text-align:center; margin:0 0 10px; color:#53675c; font-size:11px; }
+.booking-type-bar .filter-icon { display:none; }
+.booking-type-bar .type-options { justify-content:center; gap:7px; }
+.booking-type-bar .check-chip span { border:1px solid transparent; border-radius:24px; padding:8px 13px; min-height:38px; background:#f5f7f3; }
+.booking-type-bar .check-chip input:checked + span { background:#e6f0e5; border-color:#bdd1bf; color:#214b3b; }
+.booking-search .primary-fields { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1.2fr) minmax(0,1fr) auto; gap:0; padding:16px; background:#fff; border:1px solid #d4dfd6; border-radius:50px; box-shadow:0 12px 28px rgba(23,59,53,.055); }
+.booking-search .primary-fields .field { border:0; border-right:1px solid #e1e7de; border-radius:0; background:transparent; padding:10px 20px; gap:10px; }
+.booking-search .primary-fields .field:focus-within { border-radius:16px; outline:2px solid #2b6656; outline-offset:-2px; background:#f6f9f3; }
+.booking-search .field-icon { flex-basis:24px; height:32px; }
+.booking-search .field-icon svg { width:22px; height:22px; }
+.booking-search .field-label { font-size:11px; color:#53675c; }
+.booking-search .field input { font-size:14px; }
+.booking-search .budget-filter { padding:7px 20px; align-self:center; }
+.booking-search .budget-filter .filter-title { font-size:11px; color:#53675c; margin-bottom:4px; gap:6px; }
+.booking-search .budget-filter .filter-icon { width:18px; height:18px; }
+.booking-search .budget-filter .filter-icon svg { width:16px; height:16px; }
+.booking-search .budget-control { display:grid; grid-template-columns:minmax(45px,1fr) auto; gap:10px; }
+.booking-search .budget-control output { font-size:18px; }
+.booking-search .budget-control output small { font-size:10px; }
+.booking-search .search-button { border-radius:32px; align-self:center; grid-column:auto; min-height:52px; padding:16px 22px; }
+.booking-transport-row { padding:16px 16px 0; }
+.booking-transport-row .transport-filter { display:flex; align-items:center; flex-wrap:wrap; column-gap:12px; row-gap:6px; }
+.booking-transport-row .filter-title { margin:0; font-size:11px; }
+.booking-transport-row .filter-icon { width:22px; height:22px; }
+.booking-transport-row select { width:auto; min-height:38px; border-radius:20px; font-size:12px; padding:8px 30px 8px 12px; background:#fffefa; }
+.booking-transport-row .filter-help { margin:0 0 0 auto; font-size:11px; }
+@media (max-width:1050px) {
+ .booking-search .primary-fields { grid-template-columns:repeat(2,minmax(0,1fr)); border-radius:24px; gap:12px; }
+ .booking-search .primary-fields .field { border:1px solid #e1e7de; border-radius:12px; padding:12px; }
+ .booking-search .budget-filter { padding:8px 12px; }
+ .booking-search .search-button { grid-column:auto; align-self:stretch; }
+ .booking-transport-row .filter-help { flex-basis:100%; margin-top:4px; }
+}
+@media (max-width:600px) {
+ .booking-type-bar { padding:0 10px; }
+ .booking-type-bar .housing-filter { padding:14px 12px; border-radius:20px 20px 0 0; }
+ .booking-type-bar .check-chip span { padding:8px 10px; font-size:12px; min-height:40px; }
+ .booking-search .primary-fields { grid-template-columns:minmax(0,1fr); padding:14px; gap:12px; }
+ .booking-search .field input { font-size:16px; }
+ .booking-search .field-label { font-size:12px; }
+ .booking-search .budget-filter { padding:8px 12px 12px; }
+ .booking-search .budget-control output { font-size:21px; }
+ .booking-search .search-button { min-height:48px; }
+ .booking-transport-row { padding:14px 4px 0; }
+ .booking-transport-row select { max-width:100%; font-size:16px; }
+ .booking-transport-row .filter-help { font-size:12px; }
+}

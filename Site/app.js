@@ -135,7 +135,7 @@ function setLoading(isLoading) {
   elements.searchButton.setAttribute('aria-busy', String(isLoading));
   elements.searchButton.innerHTML = isLoading
     ? '<span class="button-spinner" aria-hidden="true"></span> Recherche…'
-    : '<span aria-hidden="true">⌕</span> Rechercher';
+    : '<span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span> Rechercher';
 }
 
 function selectedHousingTypes() {

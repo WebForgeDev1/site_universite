@@ -59,34 +59,14 @@
     <section class="search-section" id="recherche">
       <div class="section-heading">
         <div>
-          <p class="kicker">ON COMMENCE ICI</p>
           <h2>Où vas-tu poser tes valises ?</h2>
         </div>
         <p class="heading-aside">Quelques infos suffisent pour affiner ta recherche.</p>
       </div>
 
-      <form id="search-form" class="search-panel">
-        <div class="primary-fields">
-          <label class="field city-field">
-            <span class="field-icon" aria-hidden="true">⌖</span>
-            <span class="field-copy"><span class="field-label">Ville d'études <b class="required-dot">*</b></span><input id="city" name="city" type="text" placeholder="Ex. : Lyon, Rennes, Lille…" list="city-suggestions" autocomplete="off" aria-autocomplete="list" required><datalist id="city-suggestions"></datalist></span>
-          </label>
-          <span class="field-divider" aria-hidden="true"></span>
-          <label class="field school-field">
-            <span class="field-icon school-icon" aria-hidden="true">▤</span>
-            <span class="field-copy"><span class="field-label">École ou campus <small>Facultatif</small></span><input id="school" name="school" type="text" placeholder="Université, école, lycée…" list="school-suggestions" autocomplete="off" aria-autocomplete="list"><datalist id="school-suggestions"></datalist></span>
-          </label>
-          <button class="search-button" type="submit"><span>⌕</span> Rechercher</button>
-        </div>
-
-        <div class="filter-row">
-          <div class="filter-block budget-filter">
-            <div class="filter-title"><span class="filter-icon">€</span><span>Loyer maximum</span></div>
-            <div class="budget-control"><input id="rent" name="rent" type="range" min="250" max="1500" step="25" value="650" aria-label="Loyer maximum en euros"><output id="rent-value" for="rent">650 € <small>/ mois</small></output></div>
-          </div>
-          <div class="filter-separator" aria-hidden="true"></div>
-          <fieldset class="filter-block housing-filter">
-            <legend class="filter-title"><span class="filter-icon">⌂</span><span>Type de logement</span></legend>
+      <form id="search-form" class="search-panel booking-search">
+        <div class="booking-type-bar">          <fieldset class="filter-block housing-filter">
+            <legend class="filter-title"><span class="filter-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-8 9 8M5 10v11h14V10M10 21v-7h4v7"/></svg></span><span>Type de logement</span></legend>
             <div class="type-options">
               <label class="check-chip"><input type="checkbox" name="housing" value="Studio" checked><span>Studio</span></label>
               <label class="check-chip"><input type="checkbox" name="housing" value="T1 / T2" checked><span>T1 / T2</span></label>
@@ -94,10 +74,26 @@
               <label class="check-chip"><input type="checkbox" name="housing" value="Chambre" checked><span>Chambre</span></label>
               <label class="check-chip"><input type="checkbox" name="housing" value="Résidence étudiante" checked><span>Résidence</span></label>
             </div>
-          </fieldset>
-          <div class="filter-separator transport-separator" aria-hidden="true"></div>
-          <div class="filter-block transport-filter">
-            <label class="filter-title" for="transport"><span class="filter-icon">⇄</span><span>Pour aller en cours</span></label>
+          </fieldset></div>
+        <div class="primary-fields">
+          <label class="field city-field">
+            <span class="field-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            <span class="field-copy"><span class="field-label">Ville d'études <b class="required-dot">*</b></span><input id="city" name="city" type="text" placeholder="Ex. : Lyon, Rennes, Lille…" list="city-suggestions" autocomplete="off" aria-autocomplete="list" required><datalist id="city-suggestions"></datalist></span>
+          </label>
+          <span class="field-divider" aria-hidden="true"></span>
+          <label class="field school-field">
+            <span class="field-icon school-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-5 9 5-9 5-9-5Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M21 9v8"/></svg></span>
+            <span class="field-copy"><span class="field-label">École ou campus <small>Facultatif</small></span><input id="school" name="school" type="text" placeholder="Université, école, lycée…" list="school-suggestions" autocomplete="off" aria-autocomplete="list"><datalist id="school-suggestions"></datalist></span>
+          </label>
+          <div class="filter-block budget-filter">
+            <div class="filter-title"><span class="filter-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 5a7 7 0 0 0-4-1c-8 0-8 16 0 16a7 7 0 0 0 4-1M4 10h12M4 14h10"/></svg></span><span>Loyer maximum</span></div>
+            <div class="budget-control"><input id="rent" name="rent" type="range" min="250" max="1500" step="25" value="650" aria-label="Loyer maximum en euros"><output id="rent-value" for="rent">650 € <small>/ mois</small></output></div>
+          </div>
+          <button class="search-button" type="submit"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span> Rechercher</button>
+        </div>
+
+        <div class="booking-transport-row">          <div class="filter-block transport-filter">
+            <label class="filter-title" for="transport"><span class="filter-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 11h14M8 19v2M16 19v2"/><circle cx="8.5" cy="15.5" r=".6"/><circle cx="15.5" cy="15.5" r=".6"/></svg></span><span>Pour aller en cours</span></label>
             <select id="transport" name="transport">
               <option value="transit" selected>Transports en commun</option>
               <option value="walking">À pied</option>
@@ -105,8 +101,7 @@
               <option value="driving">En voiture</option>
             </select>
             <span class="filter-help">L'itinéraire s'ouvrira dans un service de cartographie.</span>
-          </div>
-        </div>
+          </div></div>
       </form>
       <div id="live-status" class="live-status" role="status" aria-live="polite"><span class="status-dot"></span><p><strong>Recherche multi-sites</strong><br>Connecteurs prévus : CROUS, ImmoJeune et Adele. Les annonces sont récupérées à la demande et renvoient vers la fiche d’origine ; les disponibilités doivent toujours y être vérifiées.</p></div>
     </section>
