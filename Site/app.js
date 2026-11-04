@@ -50,6 +50,32 @@ const elements = {
 };
 
 let allListings = [];
+let featuredListings = [];
+let featuredLoading = true;
+let featuredError = '';
+
+function isDiscoveryMode() {
+  return !hasSearched || !elements.city.value.trim();
+}
+
+async function loadFeaturedListings() {
+  featuredLoading = true;
+  featuredError = '';
+  renderListings();
+  try {
+    if (window.location.protocol === 'file:') throw new Error('Ouvre la version en ligne pour charger les annonces.');
+    const response = await fetch('/api/featured', { headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('La sélection est temporairement indisponible. Réessaie ou recherche une ville.');
+    const data = await response.json();
+    featuredListings = dedupeById(extractApiItems(data.crous).map(parseCrousItem)
+      .filter((item) => item.sourceId != null && item.rent > 0 && item.city));
+  } catch (error) {
+    featuredError = error.message || 'Impossible de charger la sélection.';
+  } finally {
+    featuredLoading = false;
+    renderListings();
+  }
+}
 let hasSearched = false;
 let lastLoadError = '';
 let lastSourceErrors = {};
@@ -308,10 +334,10 @@ function bestModeForFilters(listing, filters) {
 
 function getVisibleListings() {
   const filters = getFilters();
-  if (!filters.city) return [];
+  const discovery = isDiscoveryMode();
   const cityQuery = normalize(filters.city);
   const selectedTypes = filters.types;
-  const visible = allListings.map((listing) => ({
+  const visible = (discovery ? featuredListings : allListings).map((listing) => ({
     ...listing,
     displayMode: bestModeForFilters(listing, filters),
     displayPrice: (bestModeForFilters(listing, filters)?.rent || listing.rent)
@@ -319,12 +345,12 @@ function getVisibleListings() {
     const listingCity = normalize(listing.city);
     const searchCity = normalize(listing.searchCity || '');
     const cityMatches = listingCity === cityQuery || listingCity.startsWith(`${cityQuery} `) || searchCity === cityQuery;
-    if (!cityMatches || !selectedTypes.length) return false;
+    if ((!discovery && !cityMatches) || !selectedTypes.length) return false;
     if (!selectedTypes.includes(listing.type)) return false;
     return listing.displayPrice > 0 && listing.displayPrice <= filters.rent;
   });
 
-  return visible.sort((a, b) => {
+  const sorted = visible.sort((a, b) => {
     switch (filters.sort) {
       case 'price-asc': return a.displayPrice - b.displayPrice;
       case 'price-desc': return b.displayPrice - a.displayPrice;
@@ -332,6 +358,14 @@ function getVisibleListings() {
       default: return a.displayPrice - b.displayPrice;
     }
   });
+  if (!discovery) return sorted;
+  const cities = new Set();
+  return sorted.filter((listing) => {
+    const key = normalize(listing.city);
+    if (cities.has(key)) return false;
+    cities.add(key);
+    return true;
+  }).slice(0, 9);
 }
 
 function buildSearchUrl(sourceKey) {
@@ -426,17 +460,28 @@ function renderListings() {
   elements.rentValue.innerHTML = `${euro(filters.rent)} € <small>/ mois</small>`;
   updateRangeFill();
   elements.resultCount.textContent = String(listings.length);
-  if (!hasSearched && !filters.city) {
-    elements.resultsSubtitle.textContent = 'Renseigne une ville pour rechercher des offres réelles sur plusieurs plateformes.';
+  if (isDiscoveryMode()) {
+    elements.resultsSubtitle.textContent = featuredLoading
+      ? 'Chargement de logements réels dans différentes villes…'
+      : `${listings.length} annonce${listings.length > 1 ? 's' : ''} dans différentes villes, selon ton budget et tes critères. Recherche une ville pour affiner.`;
   } else {
     elements.resultsSubtitle.textContent = `${listings.length} annonce${listings.length > 1 ? 's' : ''} réelle${listings.length > 1 ? 's' : ''} correspondant à ${filters.city}${filters.school ? ` · destination : ${filters.school}` : ''}.`;
   }
-  elements.listingGrid.innerHTML = listings.map((listing) => renderCard(listing, filters)).join('');
+  elements.listingGrid.innerHTML = listings.map((listing) => renderCard(listing, isDiscoveryMode() ? { ...filters, city: listing.city, school: '' } : filters)).join('');
   elements.emptyState.hidden = listings.length > 0;
   elements.listingGrid.hidden = listings.length === 0;
   if (listings.length > 0) {
     elements.emptyTitle.textContent = 'Aucune autre offre ?';
     elements.emptyMessage.textContent = 'Les cartes proviennent des plateformes indiquées et renvoient vers leurs fiches d’origine. Vérifie toujours le loyer et la disponibilité auprès du propriétaire ou de la résidence.';
+  } else if (isDiscoveryMode() && featuredLoading) {
+    elements.emptyTitle.textContent = 'Des logements à découvrir, sans attendre';
+    elements.emptyMessage.textContent = 'La sélection de différentes villes est en cours de chargement.';
+  } else if (isDiscoveryMode() && featuredError) {
+    elements.emptyTitle.textContent = 'La sélection est temporairement indisponible';
+    elements.emptyMessage.textContent = featuredError;
+  } else if (isDiscoveryMode()) {
+    elements.emptyTitle.textContent = 'Aucune offre dans cette sélection pour ces critères';
+    elements.emptyMessage.textContent = 'Augmente le budget, sélectionne d’autres types de logement ou recherche directement ta ville.';
   } else if (lastLoadError && hasSearched) {
     elements.emptyTitle.textContent = 'Les sources n’ont pas fourni de résultats';
     elements.emptyMessage.textContent = window.location.protocol === 'file:'
@@ -449,6 +494,9 @@ function renderListings() {
     elements.emptyTitle.textContent = 'Aucune annonce réelle ne correspond à ces critères';
     elements.emptyMessage.textContent = 'Aucune source interrogée n’a fourni d’annonce correspondant à la ville, au budget et aux types sélectionnés. Essaie d’élargir le budget ou les types de logement, puis vérifie les sources complémentaires.';
   }
+  elements.listingGrid.setAttribute('aria-busy', String(isDiscoveryMode() && featuredLoading));
+  elements.resetButton.hidden = isDiscoveryMode() && featuredLoading;
+  elements.resetButton.textContent = isDiscoveryMode() && featuredError ? 'Réessayer la sélection' : 'Réinitialiser les filtres';
   updateSourceLinks();
 }
 
@@ -641,6 +689,7 @@ elements.city.addEventListener('input', () => {
   window.clearTimeout(citySuggestTimer);
   const term = elements.city.value.trim();
   citySuggestTimer = window.setTimeout(() => fetchCitySuggestions(term), 180);
+  if (!term) renderListings();
   updateSourceLinks();
 });
 
@@ -655,7 +704,10 @@ elements.rent.addEventListener('input', renderListings);
 elements.sort.addEventListener('change', renderListings);
 elements.transport.addEventListener('change', renderListings);
 document.querySelectorAll('input[name="housing"]').forEach((input) => input.addEventListener('change', renderListings));
-elements.resetButton.addEventListener('click', resetFilters);
+elements.resetButton.addEventListener('click', () => {
+  if (isDiscoveryMode() && featuredError) loadFeaturedListings();
+  else resetFilters();
+});
 
 elements.listingGrid.addEventListener('error', (event) => {
   if (event.target.matches('.listing-photo')) event.target.remove();
@@ -674,3 +726,5 @@ elements.listingGrid.addEventListener('click', (event) => {
 updateRangeFill();
 updateSourceLinks();
 renderListings();
+
+loadFeaturedListings();

@@ -1,8 +1,15 @@
 import { onRequestPost } from "./Site/functions/api/logements.js";
 
+import { onRequestGet as featured } from "./Site/functions/api/featured.js";
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/featured") {
+      if (request.method === "GET") return featured();
+      return new Response(null, { status: 405, headers: { Allow: "GET" } });
+    }
 
     if (url.pathname === "/api/logements") {
       if (request.method === "GET") {

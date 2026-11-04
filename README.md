@@ -70,3 +70,7 @@ Aucun token, clé API payante, Node.js ou serveur à gérer n'est nécessaire. L
 - Si l'erreur dit que tu as ouvert `index.html` depuis ton ordinateur, utilise l'adresse `pages.dev` après déploiement ; ne double-clique pas le fichier pour tester le scraping multi-sites.
 - Si `/api/logements` répond 404, vérifie que `functions/api/logements.js` est bien inclus dans le dépôt à la racine et que le site est déployé via Cloudflare Pages.
 - Si une source affiche zéro résultat, cela peut signifier qu'aucune offre n'est disponible dans la ville, que le parseur n'a pas reconnu le format actuel ou que le site a restreint la requête. Consulte le statut de recherche puis ouvre la source officielle.
+
+## Sélection sur la page d’accueil
+
+Sans recherche, le navigateur charge `/api/featured` : une requête au catalogue national CROUS, avec une réponse pouvant être réutilisée pendant cinq minutes. Jusqu’à neuf annonces, une par ville, sont affichées selon les critères courants. Les résultats de recherche par ville remplacent cette sélection. Les erreurs de chargement proposent de réessayer ; aucun résultat fictif ne complète les villes manquantes. La route existe pour Cloudflare Pages Functions et le Worker.

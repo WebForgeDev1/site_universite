@@ -64,7 +64,7 @@ export async function onRequestPost({ request }) {
   return json(payload, 200, { 'Cache-Control': 'no-store' });
 }
 
-async function fetchCrous() {
+export async function fetchCrous() {
   const payload = {
     idTool: CROUS_TOOL_ID,
     need_aggregation: false,
