@@ -319,3 +319,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .real-listing-visual::before,.real-listing-visual::after { display:none; }
 .listing-photo-unavailable { color:#53675c; font-size:12px; }
 .real-listing-visual:has(.listing-photo) .listing-photo-unavailable { visibility:hidden; }
+
+/* Supplied Studom wordmark, retaining the original blue artwork. */
+.brand:has(.studom-logo) { flex-shrink:0; line-height:0; }
+.studom-logo { display:block; width:164px; height:76px; object-fit:cover; object-position:center; border-radius:8px; }
+.campus-footer .studom-logo { width:176px; height:84px; }
+@media (max-width:720px) { .site-header .studom-logo { width:132px; height:62px; } }
