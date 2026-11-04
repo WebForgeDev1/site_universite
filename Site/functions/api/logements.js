@@ -139,6 +139,7 @@ async function scrapeImmoJeune(city, commune) {
     results.push({
       id: stableId('immojeune', card.url, type, priceArea.price),
       source: 'ImmoJeune', sourceKey: 'immojeune', title,
+      photo: extractListingPhoto(immoPhotoBlock(html, card.index), card.url),
       city: actualCity, searchCity: cityName, address: address?.full || actualCity,
       rent: priceArea.price, area: { min: priceArea.areaMin, max: priceArea.areaMax },
       type, description: 'Consulte la fiche d’origine pour le descriptif complet, les charges et les disponibilités.', amenities: [], modes: [],
@@ -182,6 +183,7 @@ async function scrapeAdele(city) {
 function parseAdeleDetail(html, link, searchCity) {
   const text = normalizeUnitText(cleanText(html));
   const title = extractTitle(html) || 'Résidence étudiante';
+  const photo = extractListingPhoto(html, link);
   const address = extractAddress(text);
   const city = address?.city || searchCity;
   const unitPattern = /\b(studio|t1\s*bis|t1|t2|t3|chambre(?:\s+en\s+colocation)?|appartement\s+colocation(?:\s+\d+p)?)\s*[-:]\s*(\d{1,3}(?:[.,]\d+)?)\s*m2\s*\/\s*(\d[\d\s.,]*)\s*€/gi;
@@ -198,7 +200,7 @@ function parseAdeleDetail(html, link, searchCity) {
     // Loyer + surface viennent de la fiche; la disponibilité doit toujours être confirmée chez Adele.
     const type = inferHousingType(`${match[1]} ${title}`);
     listings.push({
-      id: stableId('adele', link, match[1], rent, area), source: 'Adele', sourceKey: 'adele',
+      id: stableId('adele', link, match[1], rent, area), source: 'Adele', sourceKey: 'adele', photo,
       title: `${title} — ${match[1].replace(/\s+/g, ' ')}`,
       city, searchCity, address: address?.full || city,
       rent, area: { min: area, max: area }, type,
@@ -310,6 +312,61 @@ function robotsPathMatches(pattern, path) {
 
 function robotsSpecificity(pattern) {
   return pattern.replace(/[\*$]/g, '').length;
+}
+
+function photoAttributes(tag) {
+  const attrs = {};
+  for (const match of tag.matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) {
+    attrs[match[1].toLowerCase()] = decodeEntities(match[3]);
+  }
+  return attrs;
+}
+
+function listingPhotoUrl(raw, pageUrl) {
+  if (!raw) return '';
+  try {
+    const url = new URL(raw, pageUrl);
+    if (url.protocol !== 'https:' || url.username || url.password) return '';
+    const provider = new URL(pageUrl).hostname;
+    const isImmo = /^(?:www\.)?immojeune\.com$/.test(provider)
+      && /^(?:www\.)?immojeune(?:pro)?\.com$/.test(url.hostname)
+      && /\/uploads\/documents\//i.test(url.pathname);
+    const isAdele = /^(?:www\.)?adele\.org$/.test(provider)
+      && /^(?:www\.)?adele\.org$/.test(url.hostname)
+      && /\/files_residence_photo\//i.test(url.pathname);
+    return isImmo || isAdele ? url.href : '';
+  } catch { return ''; }
+}
+
+function extractListingPhoto(html, pageUrl) {
+  // Only housing photo paths qualify; provider avatars, logos and trackers do not.
+  for (const tag of html.match(/<meta\b[^>]*>/gi) || []) {
+    const attrs = photoAttributes(tag);
+    if (!['og:image', 'twitter:image'].includes((attrs.property || attrs.name || '').toLowerCase())) continue;
+    const photo = listingPhotoUrl(attrs.content, pageUrl);
+    if (photo) return photo;
+  }
+  for (const tag of html.match(/<(?:img|div|source)\b[^>]*>/gi) || []) {
+    const attrs = photoAttributes(tag);
+    for (const key of ['data-background', 'data-src', 'data-lazy-src', 'src']) {
+      const photo = listingPhotoUrl(attrs[key], pageUrl);
+      if (photo) return photo;
+    }
+    const firstSource = (attrs['data-srcset'] || attrs.srcset || '').split(',')[0].trim().split(/\s+/)[0];
+    const photo = listingPhotoUrl(firstSource, pageUrl);
+    if (photo) return photo;
+  }
+  return '';
+}
+
+function immoPhotoBlock(html, anchorIndex) {
+  // Images precede the residence-title link. Bound the full card explicitly so
+  // a missing photo never borrows an image from the following listing.
+  const starts = Array.from(html.matchAll(/<div\b[^>]*class\s*=\s*["'][^"']*\bcard\s+col\b[^"']*["'][^>]*>/gi), (match) => match.index);
+  const start = starts.filter((index) => index <= anchorIndex).pop();
+  if (start == null) return '';
+  const end = starts.find((index) => index > anchorIndex) ?? html.length;
+  return html.slice(start, end);
 }
 
 function collectPropertyCards(html, baseUrl, pathPattern) {

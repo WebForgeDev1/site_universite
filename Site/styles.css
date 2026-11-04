@@ -313,3 +313,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
  .booking-transport-row select { max-width:100%; font-size:16px; }
  .booking-transport-row .filter-help { font-size:12px; }
 }
+
+/* Housing photos take the entire image area; no decorative house overlay. */
+.real-listing-visual { background:#edf2ec; }
+.real-listing-visual::before,.real-listing-visual::after { display:none; }
+.listing-photo-unavailable { color:#53675c; font-size:12px; }
+.real-listing-visual:has(.listing-photo) .listing-photo-unavailable { visibility:hidden; }

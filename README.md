@@ -40,7 +40,7 @@ Aucun token, clé API payante, Node.js ou serveur à gérer n'est nécessaire. L
 ### ImmoJeune
 
 - Pages publiques de ville construites depuis le nom et le département fournis par l'API française des communes, par exemple : https://www.immojeune.com/logement-etudiant/lyon-69.html
-- La fonction recherche les fiches de résidences correspondantes et n'en conserve que les cartes où elle peut extraire un loyer réel. Elle n'importe pas de photos.
+- La fonction recherche les fiches de résidences correspondantes et n'en conserve que les cartes où elle peut extraire un loyer réel. Les cartes affichent la photo du logement fournie dans la page source, hébergée chez le fournisseur.
 - Conditions d'utilisation : https://www.immojeune.com/conditions-generales-d-utilisation.html
 
 ### Adele
@@ -76,3 +76,7 @@ Aucun token, clé API payante, Node.js ou serveur à gérer n'est nécessaire. L
 Sans recherche, le navigateur charge `/api/featured` : une requête au catalogue national CROUS, avec une réponse pouvant être réutilisée pendant cinq minutes. Jusqu’à neuf annonces, une par ville, sont affichées selon les critères courants. Les résultats de recherche par ville remplacent cette sélection. Les erreurs de chargement proposent de réessayer ; aucun résultat fictif ne complète les villes manquantes. La route existe pour Cloudflare Pages Functions et le Worker.
 
 Si le catalogue est vide ou inaccessible, `Site/data/featured.json` fournit neuf annonces réellement relevées le 4 novembre 2026. La date est affichée dans la sélection et sur les cartes ; ce relevé ne garantit pas une disponibilité actuelle. Actualiser ce fichier depuis une source vérifiée pour renouveler la sélection de secours.
+
+## Photos des annonces
+
+Les connecteurs ImmoJeune et Adele transmettent les URL des photos de leurs annonces/résidences. Les photos restent hébergées par la source et les liens d’origine sont conservés. Les avatars et logos ne sont pas utilisés comme photos de logement. CROUS privilégie les photos du logement avant celles de sa résidence. Si une photo manque ou ne charge pas, la carte affiche « Photo non disponible ».

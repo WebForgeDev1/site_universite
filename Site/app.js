@@ -223,8 +223,8 @@ function inferHousingType(item, modes, area) {
 }
 
 function crousPhotoUrl(item) {
-  // The official detail page uses the first residence photo as its banner.
-  const medias = [...(item?.residence?.medias || []), ...(item?.medias || [])];
+  // Prefer the accommodation photo; fall back to its own residence photo.
+  const medias = [...(item?.medias || []), ...(item?.residence?.medias || [])];
   for (const media of medias) {
     const src = media?.src;
     if (typeof src !== 'string' || !src.trim()) continue;
@@ -440,7 +440,7 @@ function renderCard(listing, filters) {
       <div class="listing-visual real-listing-visual">
         ${photoUrl && photoUrl !== '#' ? `<img class="listing-photo" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(listing.residence || listing.title)}" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}
         <span class="visual-label live-label"><span class="available-dot"></span> ${escapeHtml(sourceLabel)}</span>
-        <span class="real-visual-house" aria-hidden="true">⌂</span>
+        <span class="listing-photo-unavailable">Photo non disponible</span>
         <button class="favorite-button ${isFavorite ? 'is-favorite' : ''}" type="button" data-action="favorite" data-id="${escapeHtml(listing.id)}" aria-label="${isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button>
       </div>
       <div class="listing-body">
