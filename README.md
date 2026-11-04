@@ -33,9 +33,9 @@ Aucun token, clé API payante, Node.js ou serveur à gérer n'est nécessaire. L
 ### CROUS
 
 - Les cartes affichent la première photo de résidence fournie par le CROUS, ou une photo du logement si nécessaire. Les images restent hébergées sur le portail officiel ; en cas d’absence ou d’échec de chargement, l’illustration est conservée.
-- Portail : https://trouverunlogement.lescrous.fr/tools/47/search
-- L'interface officielle utilise un endpoint JSON côté serveur : `POST https://trouverunlogement.lescrous.fr/api/fr/search/47`.
-- L'identifiant `47` est une campagne configurée à la date de développement et peut changer d'une année universitaire à l'autre. Il est centralisé dans `app.js` et `functions/api/logements.js`.
+- Portail : https://trouverunlogement.lescrous.fr/tools/48/search
+- L'interface officielle utilise un endpoint JSON côté serveur : `POST https://trouverunlogement.lescrous.fr/api/fr/search/48`.
+- L'identifiant `48` est une campagne configurée à la date de développement et peut changer d'une année universitaire à l'autre. Il est centralisé dans `app.js` et `functions/api/logements.js`.
 
 ### ImmoJeune
 
@@ -74,3 +74,5 @@ Aucun token, clé API payante, Node.js ou serveur à gérer n'est nécessaire. L
 ## Sélection sur la page d’accueil
 
 Sans recherche, le navigateur charge `/api/featured` : une requête au catalogue national CROUS, avec une réponse pouvant être réutilisée pendant cinq minutes. Jusqu’à neuf annonces, une par ville, sont affichées selon les critères courants. Les résultats de recherche par ville remplacent cette sélection. Les erreurs de chargement proposent de réessayer ; aucun résultat fictif ne complète les villes manquantes. La route existe pour Cloudflare Pages Functions et le Worker.
+
+Si le catalogue est vide ou inaccessible, `Site/data/featured.json` fournit neuf annonces réellement relevées le 4 novembre 2026. La date est affichée dans la sélection et sur les cartes ; ce relevé ne garantit pas une disponibilité actuelle. Actualiser ce fichier depuis une source vérifiée pour renouveler la sélection de secours.

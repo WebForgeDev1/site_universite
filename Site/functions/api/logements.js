@@ -4,7 +4,7 @@
  * Aucun proxy générique : les URL sont fixées ici, les requêtes sont limitées et les fiches
  * d'origine sont toujours présentées à l'utilisateur. Les mises en page des sites peuvent évoluer.
  */
-const CROUS_TOOL_ID = 47;
+const CROUS_TOOL_ID = 48;
 const CROUS_API_URL = `https://trouverunlogement.lescrous.fr/api/fr/search/${CROUS_TOOL_ID}`;
 const GEO_API = 'https://geo.api.gouv.fr/communes';
 const MAX_BODY_BYTES = 4096;

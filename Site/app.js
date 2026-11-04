@@ -2,8 +2,8 @@
 'use strict';
 
 const CONFIG = Object.freeze({
-  crousToolId: 47, // Campagne CROUS configurée dans la fonction API
-  crousSearchPage: 'https://trouverunlogement.lescrous.fr/tools/47/search',
+  crousToolId: 48, // Campagne CROUS configurée dans la fonction API
+  crousSearchPage: 'https://trouverunlogement.lescrous.fr/tools/48/search',
   crousBase: 'https://trouverunlogement.lescrous.fr',
   citiesApi: 'https://geo.api.gouv.fr/communes',
   schoolsApi: 'https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-principaux-etablissements-enseignement-superieur/records',
@@ -19,7 +19,7 @@ const STORAGE_KEYS = {
 const SOURCE_CONFIG = {
   leboncoin: { url: 'https://www.leboncoin.fr/', domain: 'leboncoin.fr', title: 'Leboncoin' },
   seloger: { url: 'https://www.seloger.com/', domain: 'seloger.com', title: 'SeLoger' },
-  crous: { url: 'https://trouverunlogement.lescrous.fr/tools/47/search', domain: 'trouverunlogement.lescrous.fr', title: 'Logement CROUS' },
+  crous: { url: 'https://trouverunlogement.lescrous.fr/tools/48/search', domain: 'trouverunlogement.lescrous.fr', title: 'Logement CROUS' },
   pap: { url: 'https://www.pap.fr/annonce/locations-immobilieres', domain: 'pap.fr', title: 'PAP' },
   lokaviz: { url: 'https://www.lokaviz.fr/', domain: 'lokaviz.fr', title: 'Lokaviz' },
   studapart: { url: 'https://www.studapart.com/', domain: 'studapart.com', title: 'Studapart' },
@@ -53,6 +53,7 @@ let allListings = [];
 let featuredListings = [];
 let featuredLoading = true;
 let featuredError = '';
+let featuredSnapshotAt = '';
 
 function isDiscoveryMode() {
   return !hasSearched || !elements.city.value.trim();
@@ -67,10 +68,21 @@ async function loadFeaturedListings() {
     const response = await fetch('/api/featured', { headers: { Accept: 'application/json' } });
     if (!response.ok) throw new Error('La sélection est temporairement indisponible. Réessaie ou recherche une ville.');
     const data = await response.json();
-    featuredListings = dedupeById(extractApiItems(data.crous).map(parseCrousItem)
+    const listings = dedupeById(extractApiItems(data.crous).map(parseCrousItem)
       .filter((item) => item.sourceId != null && item.rent > 0 && item.city));
+    if (!listings.length) throw new Error('Le catalogue ne propose pas de sélection actuellement.');
+    featuredListings = listings;
+    featuredSnapshotAt = '';
   } catch (error) {
-    featuredError = error.message || 'Impossible de charger la sélection.';
+    try {
+      const snapshot = await fetch('data/featured.json');
+      if (!snapshot.ok) throw error;
+      const data = await snapshot.json();
+      featuredListings = extractApiItems(data.crous).map(parseCrousItem);
+      featuredSnapshotAt = data.fetchedAt;
+    } catch {
+      featuredError = error.message || 'Impossible de charger la sélection.';
+    }
   } finally {
     featuredLoading = false;
     renderListings();
@@ -435,6 +447,7 @@ function renderCard(listing, filters) {
         <div class="listing-meta-top"><span class="housing-tag">${escapeHtml(listing.type)}</span><span class="listing-price">${euro(listing.displayPrice)} € <small>/ mois</small></span></div>
         <h3>${escapeHtml(listing.title)}</h3>
         ${residence}
+        ${filters.snapshotAt ? `<p class="listing-residence">Relevé le ${escapeHtml(new Date(filters.snapshotAt).toLocaleDateString('fr-FR'))} · disponibilité à confirmer</p>` : ''}
         <div class="listing-location"><span class="pin" aria-hidden="true">⌖</span>${escapeHtml(listing.address || listing.city)}</div>
         <p class="listing-description">${description}</p>
         <div class="listing-specs"><span><b>↔</b> ${escapeHtml(area)}</span><span><b>⌂</b> ${escapeHtml(occupancy)}</span><span><b>●</b> ${escapeHtml(listing.availability || 'Disponibilité à confirmer')}</span></div>
@@ -463,11 +476,11 @@ function renderListings() {
   if (isDiscoveryMode()) {
     elements.resultsSubtitle.textContent = featuredLoading
       ? 'Chargement de logements réels dans différentes villes…'
-      : `${listings.length} annonce${listings.length > 1 ? 's' : ''} dans différentes villes, selon ton budget et tes critères. Recherche une ville pour affiner.`;
+      : `${listings.length} annonce${listings.length > 1 ? 's' : ''} dans différentes villes, selon ton budget et tes critères. Recherche une ville pour affiner.${featuredSnapshotAt ? ` Sélection relevée le ${new Date(featuredSnapshotAt).toLocaleDateString('fr-FR')}, disponibilités à confirmer.` : ''}`;
   } else {
     elements.resultsSubtitle.textContent = `${listings.length} annonce${listings.length > 1 ? 's' : ''} réelle${listings.length > 1 ? 's' : ''} correspondant à ${filters.city}${filters.school ? ` · destination : ${filters.school}` : ''}.`;
   }
-  elements.listingGrid.innerHTML = listings.map((listing) => renderCard(listing, isDiscoveryMode() ? { ...filters, city: listing.city, school: '' } : filters)).join('');
+  elements.listingGrid.innerHTML = listings.map((listing) => renderCard(listing, isDiscoveryMode() ? { ...filters, city: listing.city, school: '', snapshotAt: featuredSnapshotAt } : filters)).join('');
   elements.emptyState.hidden = listings.length > 0;
   elements.listingGrid.hidden = listings.length === 0;
   if (listings.length > 0) {
