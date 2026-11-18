@@ -34,9 +34,9 @@
     <nav class="top-nav" aria-label="Navigation principale">
       <a href="#recherche">Trouver un logement</a>
       <a href="#sources">Sites partenaires</a>
-      <a class="nav-note" href="#comment-ca-marche"><span aria-hidden="true">✦</span> Le projet</a>
+      <a class="nav-note" href="#comment-ca-marche">Le projet</a>
     </nav>
-    <a class="header-cta" href="#recherche">Lancer ma recherche <span aria-hidden="true">↗</span></a>
+    <a class="header-cta" href="#recherche">Lancer ma recherche</a>
   </header>
 
   <main id="top">
@@ -45,13 +45,8 @@
       <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
       <div class="hero-content">
         <div class="eyebrow"><span class="eyebrow-dot"></span> LE LOGEMENT ÉTUDIANT, SANS LE PARCOURS DU COMBATTANT</div>
-        <h1>Logement étudiant<br><em>avec Studom.</em></h1>
+        <h1>Moins chercher<br><em>mieux se loger</em></h1>
         <p class="hero-copy">Avec Studom, recherche des offres réelles du CROUS, d’ImmoJeune et d’Adele selon ta ville et ton budget, puis ouvre la fiche d’origine pour vérifier les conditions.</p>
-        <div class="hero-points">
-          <span><span class="check">✓</span> Plusieurs sources réelles</span>
-          <span><span class="check">✓</span> Filtre par ville et budget</span>
-          <span><span class="check">✓</span> Sans API payante</span>
-        </div>
       </div>
       <div class="hero-illustration" aria-label="Illustration décorative d'un immeuble étudiant">
         <div class="sun"></div>
@@ -70,7 +65,7 @@
         <div class="float-card float-card-top"><span class="float-icon">⌂</span><span><b>Ton futur chez-toi</b><small>À quelques minutes du campus</small></span></div>
         <div class="float-card float-card-bottom"><span class="float-check">✓</span><span><b>Budget respecté</b><small>À toi de comparer</small></span></div>
       </div>
-      <div class="hero-sticker"><span>✳</span> Le bon logement<br>pour tes études</div>
+      <div class="hero-sticker">Le bon logement<br>pour tes études</div>
     </section>
 
     <section class="search-section" id="recherche">
@@ -127,7 +122,7 @@
       <div class="results-topline">
         <div>
           <p class="kicker">UNE RECHERCHE QUI TE RESSEMBLE</p>
-          <h2 id="results-title">Offres réelles à explorer <span class="title-spark">✳</span></h2>
+          <h2 id="results-title">Offres réelles à explorer</h2>
           <p class="results-subtitle" id="results-subtitle">Découvre jusqu’à 9 annonces réelles dans différentes villes, puis affine ta recherche.</p>
         </div>
         <div class="results-tools">
@@ -136,13 +131,16 @@
         </div>
       </div>
       <div id="listing-grid" class="listing-grid" aria-live="polite"></div>
+      <div class="results-load-more">
+        <button id="load-more" class="load-more-button" type="button" hidden aria-controls="listing-grid">Voir plus d’annonces</button>
+      </div>
       <div id="empty-state" class="empty-state" hidden>
         <div class="empty-illustration" aria-hidden="true">⌂</div>
         <h3 id="empty-title">Aucune offre affichée</h3>
         <p id="empty-message">Renseigne une ville et lance la recherche. Aucune annonce fictive n’est utilisée.</p>
         <button id="reset-filters" class="secondary-button" type="button">Réinitialiser les filtres</button>
       </div>
-      <p class="source-attribution"><span aria-hidden="true">●</span> Chaque carte conserve le nom et le lien de la source originale. Les loyers et disponibilités peuvent évoluer : confirme-les toujours sur la fiche du fournisseur avant toute candidature.</p>
+      <p class="source-attribution"><span class="source-attribution-dot" aria-hidden="true"></span> Chaque carte conserve le nom et le lien de la source originale. Les loyers et disponibilités peuvent évoluer : confirme-les toujours sur la fiche du fournisseur avant toute candidature.</p>
     </section>
 
     <section class="sources-section" id="sources">

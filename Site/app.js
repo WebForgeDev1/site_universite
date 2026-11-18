@@ -44,6 +44,7 @@ const elements = {
   emptyTitle: document.querySelector('#empty-title'),
   emptyMessage: document.querySelector('#empty-message'),
   resetButton: document.querySelector('#reset-filters'),
+  loadMoreButton: document.querySelector('#load-more'),
   searchButton: document.querySelector('.search-button'),
   liveStatus: document.querySelector('#live-status'),
   toast: document.querySelector('#toast')
@@ -54,6 +55,8 @@ let featuredListings = [];
 let featuredLoading = true;
 let featuredError = '';
 let featuredSnapshotAt = '';
+const LISTINGS_PER_PAGE = 9;
+let listingLimit = LISTINGS_PER_PAGE;
 
 function isDiscoveryMode() {
   return !hasSearched || !elements.city.value.trim();
@@ -377,7 +380,7 @@ function getVisibleListings() {
     if (cities.has(key)) return false;
     cities.add(key);
     return true;
-  }).slice(0, 9);
+  });
 }
 
 function buildSearchUrl(sourceKey) {
@@ -467,9 +470,11 @@ function renderCard(listing, filters) {
     </article>`;
 }
 
-function renderListings() {
+function renderListings({ resetLimit = false } = {}) {
+  if (resetLimit) listingLimit = LISTINGS_PER_PAGE;
   const filters = getFilters();
   const listings = getVisibleListings();
+  const displayedListings = listings.slice(0, listingLimit);
   elements.rentValue.innerHTML = `${euro(filters.rent)} € <small>/ mois</small>`;
   updateRangeFill();
   elements.resultCount.textContent = String(listings.length);
@@ -480,9 +485,15 @@ function renderListings() {
   } else {
     elements.resultsSubtitle.textContent = `${listings.length} annonce${listings.length > 1 ? 's' : ''} réelle${listings.length > 1 ? 's' : ''} correspondant à ${filters.city}${filters.school ? ` · destination : ${filters.school}` : ''}.`;
   }
-  elements.listingGrid.innerHTML = listings.map((listing) => renderCard(listing, isDiscoveryMode() ? { ...filters, city: listing.city, school: '', snapshotAt: featuredSnapshotAt } : filters)).join('');
+  elements.listingGrid.innerHTML = displayedListings.map((listing) => renderCard(listing, isDiscoveryMode() ? { ...filters, city: listing.city, school: '', snapshotAt: featuredSnapshotAt } : filters)).join('');
   elements.emptyState.hidden = listings.length > 0;
   elements.listingGrid.hidden = listings.length === 0;
+  const remainingListings = Math.max(0, listings.length - displayedListings.length);
+  elements.loadMoreButton.hidden = remainingListings === 0;
+  if (remainingListings > 0) {
+    const nextBatch = Math.min(LISTINGS_PER_PAGE, remainingListings);
+    elements.loadMoreButton.textContent = `Voir plus d’annonces (${nextBatch})`;
+  }
   if (listings.length > 0) {
     elements.emptyTitle.textContent = 'Aucune autre offre ?';
     elements.emptyMessage.textContent = 'Les cartes proviennent des plateformes indiquées et renvoient vers leurs fiches d’origine. Vérifie toujours le loyer et la disponibilité auprès du propriétaire ou de la résidence.';
@@ -570,7 +581,7 @@ function resetFilters() {
   elements.rent.value = '650';
   document.querySelectorAll('input[name="housing"]').forEach((input) => { input.checked = true; });
   elements.sort.value = 'recommended';
-  renderListings();
+  renderListings({ resetLimit: true });
   showToast('Filtres réinitialisés.');
 }
 
@@ -671,8 +682,9 @@ elements.form.addEventListener('submit', async (event) => {
   }
 
   hasSearched = true;
+  listingLimit = LISTINGS_PER_PAGE;
   lastLoadError = '';
-  renderListings();
+  renderListings({ resetLimit: true });
   setLoading(true);
   setLiveStatus('Recherche d’annonces réelles sur le CROUS, ImmoJeune et Adele…', 'loading');
 
@@ -702,7 +714,7 @@ elements.city.addEventListener('input', () => {
   window.clearTimeout(citySuggestTimer);
   const term = elements.city.value.trim();
   citySuggestTimer = window.setTimeout(() => fetchCitySuggestions(term), 180);
-  if (!term) renderListings();
+  if (!term) renderListings({ resetLimit: true });
   updateSourceLinks();
 });
 
@@ -713,10 +725,14 @@ elements.school.addEventListener('input', () => {
   updateSourceLinks();
 });
 
-elements.rent.addEventListener('input', renderListings);
-elements.sort.addEventListener('change', renderListings);
-elements.transport.addEventListener('change', renderListings);
-document.querySelectorAll('input[name="housing"]').forEach((input) => input.addEventListener('change', renderListings));
+elements.rent.addEventListener('input', () => renderListings({ resetLimit: true }));
+elements.sort.addEventListener('change', () => renderListings({ resetLimit: true }));
+elements.transport.addEventListener('change', () => renderListings({ resetLimit: true }));
+document.querySelectorAll('input[name="housing"]').forEach((input) => input.addEventListener('change', () => renderListings({ resetLimit: true })));
+elements.loadMoreButton.addEventListener('click', () => {
+  listingLimit += LISTINGS_PER_PAGE;
+  renderListings();
+});
 elements.resetButton.addEventListener('click', () => {
   if (isDiscoveryMode() && featuredError) loadFeaturedListings();
   else resetFilters();

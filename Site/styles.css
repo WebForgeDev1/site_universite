@@ -45,8 +45,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .hero h1 { font-family: var(--display); font-size: clamp(40px, 4.15vw, 60px); line-height: 1.1; letter-spacing: -2.3px; font-weight: 700; margin: 23px 0 16px; }
 .hero h1 em { color: var(--sun); font-style: normal; font-weight: 600; }
 .hero-copy { max-width: 405px; margin: 0; color: #cfddd5; font-size: 14px; line-height: 1.8; }
-.hero-points { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 26px; color: #e4eee6; font-size: 10px; font-weight: 500; }
-.hero-points span { display: inline-flex; align-items: center; gap: 6px; }.check { display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: #416e5c; color: #fff; font-size: 9px; }
 .hero-orb { position: absolute; pointer-events: none; border: 1px solid rgba(236,246,237,.1); border-radius: 50%; }.hero-orb-one { width: 520px; height: 520px; right: -42px; top: -240px; }.hero-orb-two { width: 650px; height: 650px; right: -108px; top: -305px; }
 .hero-illustration { position: absolute; width: 470px; height: 380px; right: 32px; bottom: -3px; z-index: 1; }
 .sun { position: absolute; width: 85px; height: 85px; top: 35px; right: 80px; border-radius: 50%; background: var(--sun); opacity: .98; }
@@ -80,7 +78,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 @media (max-width:720px) {
   .site-header { width:calc(100% - 32px);height:70px; }.brand { font-size:19px; }.brand-mark { width:26px;height:26px; }.top-nav { display:none; }.header-cta { font-size:10px;padding:10px 11px;gap:7px; }
-  .hero { width:calc(100% - 24px);min-height:610px;padding:34px 25px 0;align-items:flex-start;border-radius:17px; }.hero-content { width:100%; }.eyebrow { font-size:8px;letter-spacing:.9px; }.hero h1 { font-size:44px;letter-spacing:-1.7px;margin-top:18px; }.hero-copy { max-width:370px;font-size:12px; }.hero-points { gap:8px 13px;max-width:360px;font-size:9px; }.hero-illustration { transform:scale(.83);transform-origin:bottom right;right:-3px;bottom:-4px; }.hero-sticker { top:auto;bottom:220px;right:13px;transform:rotate(7deg) scale(.9); }
+  .hero { width:calc(100% - 24px);min-height:610px;padding:34px 25px 0;align-items:flex-start;border-radius:17px; }.hero-content { width:100%; }.eyebrow { font-size:8px;letter-spacing:.9px; }.hero h1 { font-size:44px;letter-spacing:-1.7px;margin-top:18px; }.hero-copy { max-width:370px;font-size:12px; }.hero-illustration { transform:scale(.83);transform-origin:bottom right;right:-3px;bottom:-4px; }.hero-sticker { top:auto;bottom:220px;right:13px;transform:rotate(7deg) scale(.9); }
   .search-section,.results-section,.sources-section,.how-section { width:calc(100% - 32px); }.search-section { padding-top:47px; }.section-heading { display:block; }.section-heading h2,.results-topline h2,.sources-intro h2,.how-heading h2 { font-size:27px; }.heading-aside { margin-top:10px;max-width:100%; }.search-panel { padding:15px 14px 0;margin-top:20px; }.primary-fields { flex-direction:column;align-items:stretch;gap:13px; }.field { min-height:47px; }.field-divider { display:none; }.search-button { width:100%;padding:13px; }.filter-row { margin:17px -14px 0;padding:16px 14px;display:grid;grid-template-columns:1fr;gap:16px; }.filter-separator { width:100%;height:1px; }.budget-filter,.housing-filter,.transport-filter { flex:auto; }.budget-filter { max-width:100%; }.budget-control input[type=range] { max-width:250px; }.type-options { gap:7px; }.check-chip span { padding:8px 9px; }.transport-filter select { font-size:11px; }.filter-help { font-size:10px; }
   .demo-notice { align-items:flex-start; }.demo-notice p { font-size:9px; }.results-section { padding-top:48px; }.results-topline { align-items:flex-start;flex-direction:column;gap:18px; }.results-topline h2 { font-size:26px; }.results-tools { width:100%;justify-content:space-between; }.sort-control { flex:1;justify-content:flex-start; }.sort-control select { max-width:none; }.listing-grid { grid-template-columns:1fr;gap:14px;margin-top:20px; }.listing-visual { height:185px; }.listing-card { max-width:530px;width:100%;margin:0 auto; }.listing-body { padding:15px; }.listing-description { min-height:0; }.sources-section { margin-top:58px;grid-template-columns:1fr;gap:23px;padding-top:29px; }.sources-intro h2 { max-width:400px; }.sources-intro > p:last-child { max-width:450px; }.source-grid { gap:8px; }.source-card { padding:10px;gap:8px; }.source-monogram { width:32px;height:32px;flex-basis:32px; }.source-info strong { font-size:10px; }.source-info small { font-size:8px; }.source-footnote { grid-column:1;margin:-11px 0 0; }.how-section { padding:53px 0; }.how-heading h2 { font-size:25px; }.how-grid { grid-template-columns:1fr;gap:10px;margin-top:23px; }.how-card { min-height:0;padding:17px;display:grid;grid-template-columns:40px 1fr;column-gap:12px;align-items:center; }.how-emoji { grid-row:1 / span 2; }.how-card h3 { margin:0 25px 3px 0; }.how-card p { grid-column:2;max-width:none; }.how-number { top:15px;right:15px; }.site-footer { padding:23px 18px;align-items:flex-start;flex-wrap:wrap;gap:13px; }.site-footer > p { width:calc(100% - 10px);order:3; }.footer-meta { margin-left:auto;gap:11px; }.footer-meta span { display:none; }
 }
@@ -109,7 +107,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @keyframes campus-spin { to { transform:rotate(360deg); } }
 @keyframes campus-pulse { 50% { opacity:.35; } }
 .source-attribution { margin:16px 0 0; color:#8a978d; font-size:10px; line-height:1.8; }
-.source-attribution > span { color:#55936b; margin-right:5px; font-size:9px; }
+.source-attribution-dot { display:inline-block; width:7px; height:7px; margin-right:7px; border-radius:50%; background:#55936b; }
 .source-attribution a { color:#416e51; text-decoration:underline; text-underline-offset:2px; }
 .source-attribution a:hover { color:#173b35; }
 .real-listing-visual { display:grid; place-items:center; background:radial-gradient(circle at 78% 22%,#f8e5ba 0 34px,transparent 35px),linear-gradient(140deg,#e8f0e5,#c9ddcc); }
@@ -312,6 +310,44 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
  .booking-transport-row { padding:14px 4px 0; }
  .booking-transport-row select { max-width:100%; font-size:16px; }
  .booking-transport-row .filter-help { font-size:12px; }
+}
+
+/* Comfortable reading scale across the whole interface. */
+.top-nav { font-size:14px; }
+.header-cta { font-size:14px; }
+.hero-copy { font-size:16px; line-height:1.7; }
+.heading-aside { font-size:14px; }
+.results-subtitle { font-size:14px; line-height:1.6; }
+.sort-control,.result-count { font-size:12px; }
+.sort-control select { font-size:12px; }
+.live-status p { font-size:14px; line-height:1.65; }
+.source-attribution { font-size:13px; line-height:1.7; }
+.listing-residence,.listing-location,.listing-description,.listing-specs span,.listing-link,.notes-toggle,.notes-panel label,.notes-panel textarea,.note-local,.save-note,.saved-note-preview,.route-link-row a { font-size:12px; }
+.listing-card h3 { font-size:17px; line-height:1.35; }
+.listing-description { line-height:1.6; }
+.housing-tag,.listing-price small,.listing-amenities span,.visual-label { font-size:11px; }
+.how-card h3 { font-size:16px; }
+.how-card p { font-size:14px; line-height:1.65; }
+.sources-intro > p:last-child { font-size:14px; line-height:1.7; }
+.source-info strong { font-size:14px; }
+.source-info small,.source-footnote { font-size:12px; line-height:1.55; }
+.campus-footer-top p,.footer-invitation p,.footer-about p,.footer-link-column > a,.footer-about details { font-size:14px; }
+.footer-link-column h3,.footer-search-button,.footer-top-link { font-size:13px; }
+.campus-footer-bottom { font-size:12px; }
+.results-load-more { display:flex; justify-content:center; margin-top:30px; }
+.load-more-button { min-height:46px; padding:11px 20px; border:1px solid #8aab96; border-radius:24px; background:#fff; color:#214b3b; font-size:14px; font-weight:800; cursor:pointer; transition:background .18s, border-color .18s, transform .18s; }
+.load-more-button:hover { background:#e9f3eb; border-color:#557e64; transform:translateY(-1px); }
+.load-more-button[hidden] { display:none; }
+
+@media (max-width:720px) {
+  .hero-copy { font-size:15px; max-width:32ch; }
+  .heading-aside,.results-subtitle,.live-status p,.source-attribution { font-size:14px; }
+  .listing-residence,.listing-location,.listing-description,.listing-specs span,.listing-link,.notes-toggle,.notes-panel label,.notes-panel textarea,.note-local,.save-note,.saved-note-preview,.route-link-row a { font-size:13px; }
+  .source-info strong { font-size:14px; }
+  .source-info small,.source-footnote { font-size:12px; }
+  .how-card p,.sources-intro > p:last-child { font-size:14px; }
+  .results-load-more { margin-top:24px; }
+  .load-more-button { width:100%; max-width:360px; min-height:50px; }
 }
 
 /* Housing photos take the entire image area; no decorative house overlay. */
