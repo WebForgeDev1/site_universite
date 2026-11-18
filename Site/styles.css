@@ -232,7 +232,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .type-options { gap:8px; }
 .check-chip span { padding:10px 12px; min-height:42px; font-size:12px; border-radius:8px; color:#485d50; border-color:#aebfb2; }
 .check-chip input:checked + span { color:#173b35; border-color:#557e64; background:#e0eddf; }
-.check-chip input:checked + span::before { content:'✓'; margin-right:6px; font-size:12px; }
 .transport-filter select { min-height:44px; padding:10px 12px; font-size:12px; border-color:#aebfb2; }
 .filter-help { color:#53675c; font-size:11px; line-height:1.65; margin-top:10px; }
 .search-section .live-status { padding:16px 18px; margin-top:16px; }
@@ -361,3 +360,71 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .studom-logo { display:block; width:164px; height:76px; object-fit:cover; object-position:center; border-radius:8px; }
 .campus-footer .studom-logo { width:176px; height:84px; }
 @media (max-width:720px) { .site-header .studom-logo { width:132px; height:62px; } }
+
+/* Hero direction: a calmer, editorial introduction with the search message first. */
+.hero { min-height:470px; padding:60px 66px; border-radius:26px; }
+.hero-content { width:49%; padding-bottom:0; }
+.hero h1 { margin:0; font-size:clamp(48px,5.2vw,76px); letter-spacing:-.035em; line-height:1.04; }
+.hero-copy { max-width:39ch; margin-top:24px; font-size:17px; line-height:1.68; }
+.hero-illustration { width:505px; height:405px; right:42px; bottom:-5px; }
+.float-card { gap:12px; padding:13px 15px; border:0; border-radius:14px; box-shadow:0 16px 34px rgba(7,31,23,.18); }
+.float-card b { font-size:13px; }
+.float-card small { margin-top:3px; font-size:11px; }
+.float-icon,.float-check { flex:0 0 36px; width:36px; height:36px; }
+.float-icon,.float-check { font-size:20px; line-height:1; }
+.float-card-top { top:104px; left:0; }
+.float-card-bottom { right:6px; bottom:104px; }
+.hero-sticker { right:35px; top:34px; padding:14px 20px; font-size:12px; line-height:1.35; }
+.hero-sticker span { display:none; }
+
+@media (max-width:1000px) {
+  .hero { min-height:425px; padding:48px 42px; }
+  .hero-content { width:54%; }
+  .hero h1 { font-size:clamp(43px,5.7vw,61px); }
+  .hero-copy { margin-top:18px; font-size:16px; }
+  .hero-illustration { transform:scale(.86); transform-origin:bottom right; right:4px; }
+}
+
+@media (max-width:720px) {
+  .hero { min-height:620px; padding:36px 25px 0; border-radius:18px; }
+  .hero-content { width:100%; }
+  .hero h1 { font-size:clamp(42px,12vw,52px); letter-spacing:-.035em; line-height:1.05; }
+  .hero-copy { max-width:31ch; margin-top:18px; font-size:15px; line-height:1.62; }
+  .hero-illustration { transform:scale(.77); transform-origin:bottom right; right:-15px; bottom:-8px; }
+  .float-card { padding:10px 11px; gap:8px; border-radius:11px; }
+  .float-card b { font-size:10px; }
+  .float-card small { font-size:8px; }
+  .float-icon,.float-check { flex-basis:28px; width:28px; height:28px; }
+  .float-icon,.float-check { font-size:15px; }
+  .float-card-top { top:auto; bottom:205px; left:6px; }
+  .float-card-bottom { right:4px; bottom:92px; }
+  .float-card-bottom > span:last-child { min-width:96px; }
+  .hero-sticker { right:15px; top:17px; bottom:auto; padding:11px 15px; font-size:10px; }
+}
+
+/* Residence photograph replaces the decorative building scene. */
+.hero-illustration { width:478px; height:324px; right:48px; bottom:48px; overflow:visible; border-radius:18px; box-shadow:0 20px 42px rgba(4,24,18,.2); }
+.hero-residence-photo { display:block; width:100%; height:100%; object-fit:cover; object-position:70% center; border-radius:18px; }
+.hero-illustration::after { content:""; position:absolute; inset:0; border:1px solid rgba(255,255,255,.34); border-radius:18px; pointer-events:none; }
+.hero-illustration .float-card { z-index:2; }
+.hero-illustration .float-card-top { top:28px; left:-72px; }
+.hero-illustration .float-card-bottom { right:-62px; bottom:24px; }
+
+@media (max-width:1000px) {
+  .hero-illustration { width:400px; height:288px; right:34px; bottom:42px; transform:none; }
+  .hero-illustration .float-card-top { left:-42px; }
+  .hero-illustration .float-card-bottom { right:-35px; }
+}
+
+@media (max-width:720px) {
+  .hero { min-height:650px; }
+  .hero-illustration { width:calc(100% - 38px); height:214px; right:19px; bottom:22px; transform:none; }
+  .hero-illustration .float-card { padding:8px 9px; gap:7px; border-radius:10px; }
+  .hero-illustration .float-card b { font-size:9px; }
+  .hero-illustration .float-card small { font-size:7px; }
+  .hero-illustration .float-icon,.hero-illustration .float-check { flex-basis:24px; width:24px; height:24px; }
+  .hero-illustration .float-icon,.hero-illustration .float-check { font-size:14px; }
+  .hero-illustration .float-card-top { top:-16px; left:10px; bottom:auto; }
+  .hero-illustration .float-card-bottom { right:9px; bottom:-15px; }
+  .hero-illustration .float-card-bottom > span:last-child { min-width:76px; }
+}
